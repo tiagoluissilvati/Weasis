@@ -14,7 +14,7 @@ import org.weasis.core.ui.model.utils.bean.Measurement;
 
 public interface ImageStatistics {
   Measurement IMAGE_MIN = new Measurement(Messages.getString("measure.min"), 1, false, true, false);
-  Measurement IMAGE_MAX = new Measurement(Messages.getString("measure.max"), 2, false, true, false);
+  Measurement IMAGE_MAX = new Measurement(Messages.getString("measure.max"), 2, false, true, true);
   Measurement IMAGE_MEAN =
       new Measurement(Messages.getString("measure.mean"), 3, false, true, true);
   Measurement IMAGE_STD =

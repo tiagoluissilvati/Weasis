@@ -102,7 +102,7 @@ public class MprPrefView extends AbstractItemDialogPage {
   private void setDefaultLayout() {
     comboBoxLayouts.setSelectedItem(MprFactory.getDefaultGridBagLayoutModel());
     if (comboBoxLayouts.getSelectedIndex() < 0) {
-      comboBoxLayouts.setSelectedItem(0);
+      comboBoxLayouts.setSelectedItem(4);
     }
   }
 
@@ -135,7 +135,7 @@ public class MprPrefView extends AbstractItemDialogPage {
     spinnerCrossGapSize.setValue(gapSize);
     GuiUtils.getUICore()
         .getSystemPreferences()
-        .put(MprFactory.P_DEFAULT_LAYOUT, MprContainer.view1.getId());
+        .put(MprFactory.P_DEFAULT_LAYOUT, MprContainer.view5.getId());
     setDefaultLayout();
   }
 }
