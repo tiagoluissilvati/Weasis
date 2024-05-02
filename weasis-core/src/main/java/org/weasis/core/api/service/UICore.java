@@ -24,6 +24,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.management.ManagementFactory;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -36,6 +37,10 @@ import java.util.Locale;
 import java.util.Locale.Category;
 import java.util.Map;
 import java.util.Properties;
+import javax.management.InstanceNotFoundException;
+import javax.management.JMException;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +63,7 @@ import org.weasis.core.ui.util.ToolBarContainer;
 import org.weasis.core.ui.util.Toolbar;
 import org.weasis.core.util.FileUtil;
 import org.weasis.core.util.StringUtil;
+import org.weasis.pref.ConfigData;
 
 public final class UICore {
   public static final String P_FORMAT_CODE = "locale.format.code";
@@ -65,7 +71,6 @@ public final class UICore {
   public static final String CONFIRM_CLOSE = "weasis.confirm.closing";
   public static final String LINUX_WINDOWS_DECORATION = "weasis.linux.windows.decoration";
   private static final Logger LOGGER = LoggerFactory.getLogger(UICore.class);
-  private static UICore INSTANCE;
   private final ToolBarContainer toolbarContainer;
   public final List<ViewerPlugin<?>> viewerPlugins;
   private final List<DataExplorerView> explorerPlugins;
@@ -80,8 +85,13 @@ public final class UICore {
   private final WProperties systemPreferences;
   private final WProperties localPersistence;
   private final WProperties initialSystemPreferences;
+  private final ConfigData configData;
   private final HashMap<String, WProperties> pluginPersistenceMap;
   private final File propsFile;
+
+  private static final class Holder {
+    private static final UICore INSTANCE = new UICore();
+  }
 
   /** Do not instantiate UICore, get OSGI singleton service from GuiUtils.getUICore() */
   private UICore() {
@@ -89,6 +99,7 @@ public final class UICore {
     this.baseArea = dockingControl.getContentArea();
     this.mainArea = dockingControl.createWorkingArea("mainArea");
     this.toolbarContainer = new ToolBarContainer();
+    this.configData = retrieveconfigData();
     this.initialSystemPreferences = new WProperties();
     this.systemPreferences = new WProperties();
     this.pluginPersistenceMap = new HashMap<>();
@@ -136,10 +147,26 @@ public final class UICore {
     FileUtil.readProperties(new File(dataFolder, "persistence.properties"), localPersistence);
   }
 
-  private static class Holder {
-    private static final UICore INSTANCE = new UICore();
+  private static ConfigData retrieveconfigData() {
+    MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+    try {
+      ObjectName objectName = ObjectName.getInstance("weasis:name=MainWindow"); // NON-NLS
+      Object preferences = server.getAttribute(objectName, "ConfigData");
+      if (preferences instanceof ConfigData configData) {
+        return configData;
+      }
+    } catch (InstanceNotFoundException ignored) {
+    } catch (JMException e) {
+      LOGGER.debug("Error while receiving main window", e);
+    }
+    throw new IllegalStateException("Cannot retrieve ConfigData");
   }
 
+  /**
+   * Thread safe singleton instance.
+   *
+   * @return a thread safe singleton instance with a lazy initialization.
+   */
   public static UICore getInstance() {
     return Holder.INSTANCE;
   }
@@ -262,19 +289,21 @@ public final class UICore {
   }
 
   public String getConfigServiceUrl() {
-    return INSTANCE.getSystemPreferences().getProperty("weasis.config.url");
+    return Holder.INSTANCE.getSystemPreferences().getProperty("weasis.config.url");
   }
 
   public String getStatisticServiceUrl() {
-    return INSTANCE.getSystemPreferences().getProperty("weasis.stat.url");
+    return Holder.INSTANCE.getSystemPreferences().getProperty("weasis.stat.url");
   }
 
   public boolean isLocalSession() {
-    return INSTANCE.getSystemPreferences().getBooleanProperty("weasis.pref.local.session", false);
+    return Holder.INSTANCE
+        .getSystemPreferences()
+        .getBooleanProperty("weasis.pref.local.session", false);
   }
 
   public boolean isStoreLocalSession() {
-    return INSTANCE
+    return Holder.INSTANCE
         .getSystemPreferences()
         .getBooleanProperty("weasis.pref.store.local.session", false);
   }
@@ -344,6 +373,10 @@ public final class UICore {
 
   public List<Codec<MediaElement>> getCodecPlugins() {
     return codecPlugins;
+  }
+
+  public ConfigData getConfigData() {
+    return configData;
   }
 
   /**
