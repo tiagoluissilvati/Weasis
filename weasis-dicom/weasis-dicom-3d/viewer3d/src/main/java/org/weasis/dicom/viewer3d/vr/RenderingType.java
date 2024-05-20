@@ -16,10 +16,10 @@ public enum RenderingType {
   COMPOSITE(Messages.getString("composite"), 0, ViewType.VOLUME3D),
   MIP(Messages.getString("mip"), 1, ViewType.VOLUME3D),
   ISO2(Messages.getString("iso.surface"), 2, ViewType.VOLUME3D),
-  SLICE(Messages.getString("slice"), 3, ViewType.SLICE);
-  //  SLICE_AXIAL("MPR Axial", 4, ViewType.AXIAL),
-  //  SLICE_CORONAL("MPR Coronal", 5, ViewType.CORONAL),
-  //  SLICE_SAGITTAL("MPR Sagittal", 6, ViewType.SAGITTAL);
+  SLICE(Messages.getString("slice"), 3, ViewType.SLICE),
+  SLICE_AXIAL("MPR Axial", 4, ViewType.AXIAL),
+  SLICE_CORONAL("MPR Coronal", 5, ViewType.CORONAL),
+  SLICE_SAGITTAL("MPR Sagittal", 6, ViewType.SAGITTAL);
 
   final int id;
   final String title;
