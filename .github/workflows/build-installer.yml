@@ -64,9 +64,8 @@ jobs:
       matrix:
         include:
           - { os: ubuntu-latest, platform: x64, wsystem: linux, warc: x86-64 }
-          - { os: macos-latest, platform: x64, wsystem: macosx, warc: x86-64 }
-          - { os: macos-latest-xlarge, platform: arm64, wsystem: macosx, warc: aarch64 }
-          #  - { os: windows-latest, platform: x86, wsystem: windows, warc: x86 }
+          - { os: macos-13, platform: x64, wsystem: macosx, warc: x86-64 }
+          - { os: macos-latest, platform: arm64, wsystem: macosx, warc: aarch64 }
           - { os: windows-latest, platform: x64, wsystem: windows, warc: x86-64 }
 
     steps:
@@ -207,47 +206,30 @@ jobs:
           fi
           echo "APP_ARTIFACT=weasis-${machine}-${ARC_NAME}-${{ env.WEASIS_CLEAN_VERSION }}" >> $GITHUB_ENV
 
-      - name: Notarize Build
-        shell: bash
+      - name: "Notarize Release Build"
         if: matrix.wsystem == 'macosx'
         run: |
-          BUNDLE_PKG="final-dist/${{ env.NAME }}-${{ env.WEASIS_CLEAN_VERSION }}-${{ matrix.warc }}.pkg"
-          # create temporary files
-          NOTARIZE_APP_LOG=$(mktemp -t notarize-app)
-          NOTARIZE_INFO_LOG=$(mktemp -t notarize-info)
+          xcrun notarytool submit \
+            "final-dist/${{ env.NAME }}-${{ env.WEASIS_CLEAN_VERSION }}-${{ matrix.warc }}.pkg" \
+            --apple-id "${{ secrets.APPLE_DEVELOPER_AC_USERNAME }}" \
+            --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+            --password "${{ secrets.WEASIS_PWD }}" \
+            --wait
 
-          # delete temporary files on exit
-          function finish {
-          rm "$NOTARIZE_APP_LOG" "$NOTARIZE_INFO_LOG"
-          }
-          trap finish EXIT
+      - name: "Staple Release Build"
+        if: matrix.wsystem == 'macosx'
+        run: |
+          xcrun stapler staple \
+            "final-dist/${{ env.NAME }}-${{ env.WEASIS_CLEAN_VERSION }}-${{ matrix.warc }}.pkg"
 
-
-          # submit app for notarization
-          if xcrun altool --notarize-app --primary-bundle-id "org.test.${{ env.NAME }}" --username "${{ secrets.MACOS_NOTARIZATION_USER}}" --password "${{ secrets.MACOS_NOTARIZATION_PWD }}" -f "$BUNDLE_PKG" > "$NOTARIZE_APP_LOG" 2>&1; then
-          cat "$NOTARIZE_APP_LOG"
-          RequestUUID=$(awk -F ' = ' '/RequestUUID/ {print $2}' "$NOTARIZE_APP_LOG")
-
-          # check status periodically
-          while sleep 60 && date; do
-           # check notarization status
-           if xcrun altool --notarization-info "$RequestUUID" --username "${{ secrets.MACOS_NOTARIZATION_USER}}" --password "${{ secrets.MACOS_NOTARIZATION_PWD }}" > "$NOTARIZE_INFO_LOG" 2>&1; then
-             cat "$NOTARIZE_INFO_LOG"
-
-             # once notarization is complete, run stapler and exit
-             if ! grep -q "Status: in progress" "$NOTARIZE_INFO_LOG"; then
-               xcrun stapler staple "$BUNDLE_PKG"
-               exit $?
-             fi
-           else
-             cat "$NOTARIZE_INFO_LOG" 1>&2
-             exit 1
-           fi
-          done
-          else
-          cat "$NOTARIZE_APP_LOG" 1>&2
-          exit 1
-          fi
+      - name: "Add checksum sha256 file"
+        shell: bash
+        run: |
+            for file in "final-dist/*"; do
+              if [[ -f "$file" ]]; then
+                sha256sum "$file" >> "$file.sha256"
+              fi
+            done
 
       - name: Upload the installer
         uses: actions/upload-artifact@v3
