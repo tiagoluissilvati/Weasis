@@ -337,8 +337,8 @@ public class SeriesThumbnail extends Thumbnail
 
       g2d.setFont(
           width > DEFAULT_SIZE
-              ? FontItem.MINI_SEMIBOLD.getFont()
-              : FontItem.MICRO_SEMIBOLD.getFont());
+              ? FontItem.H3.getFont()
+              : FontItem.LARGE.getFont());
       FontMetrics fontMetrics = g2d.getFontMetrics();
       final int fontHeight = fontMetrics.getHeight();
       int descent = g2d.getFontMetrics().getDescent();
