@@ -201,7 +201,7 @@ public class WeasisLauncher {
       mFelix.start();
 
       // End of splash screen
-     // loader.close();
+      loader.close();
       loader = null;
 
       String logActivation = serverProp.get("org.apache.sling.commons.log.file");
@@ -925,7 +925,7 @@ Starting OSGI Bundles...
     // Splash screen that shows bundles loading
     final WeasisLoader loader = new WeasisLoader(cacheDir.toPath(), mainFrame);
     // Display splash screen
-    //loader.open();
+    loader.open();
 
     if (versionNew != null) {
       localSourceProp.put(P_WEASIS_VERSION, versionNew);
