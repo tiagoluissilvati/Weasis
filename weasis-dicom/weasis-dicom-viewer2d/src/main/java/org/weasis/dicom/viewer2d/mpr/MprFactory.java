@@ -57,9 +57,9 @@ public class MprFactory implements SeriesViewerFactory {
       return MprContainer.LAYOUT_LIST.stream()
           .filter(g -> defLayout.equals(g.getId()))
           .findFirst()
-          .orElse(MprContainer.view1);
+          .orElse(MprContainer.view5);
     }
-    return MprContainer.view1;
+    return MprContainer.view5;
   }
 
   @Override

@@ -7,14 +7,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
-package org.weasis.launcher;
+package org.weasis.core.api.gui;
 
-import javax.swing.RootPaneContainer;
-import org.weasis.pref.ConfigData;
+import java.util.Hashtable;
+import org.weasis.core.api.gui.util.AbstractTabLicense;
 
-public interface WeasisMainFrameMBean {
+public interface LicenseTabFactory extends InsertableFactory {
 
-  RootPaneContainer getRootPaneContainer();
-
-  ConfigData getConfigData();
+  @Override
+  AbstractTabLicense createInstance(Hashtable<String, Object> properties);
 }

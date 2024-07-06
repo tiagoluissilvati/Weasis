@@ -18,6 +18,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,6 +70,26 @@ public class ThumbnailMouseAndKeyAdapter extends MouseAdapter implements KeyList
   public void mouseClicked(MouseEvent e) {
     if (e.getClickCount() == 2) {
       openSeriesInDefaultPlugin(dicomModel, series);
+    }
+
+    if (e.isAltDown() && e.getButton() == MouseEvent.BUTTON1) {
+
+      SeriesSelectionModel selList = getSeriesSelectionModel();
+      List<SeriesViewerFactory> plugins =
+              GuiUtils.getUICore().getViewerFactoryList(new String[] {series.getMimeType()});
+
+
+      for (final SeriesViewerFactory viewerFactory : plugins) {
+
+        if (viewerFactory.canReadSeries(series) &&
+                viewerFactory.canAddSeries()) {
+
+          selList.setOpeningSeries(true);
+          ViewerPluginBuilder.openSequenceInPlugin(
+                  viewerFactory, selList, dicomModel, true, false);
+          selList.setOpeningSeries(false);
+        }
+      }
     }
   }
 
