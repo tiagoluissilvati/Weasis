@@ -43,7 +43,7 @@ echo "Launcher Path: $fullpath"
 echo "Arguments:" "$@"
 
 # Get additional weasis arguments
-binaryCmd="Weasis"
+binaryCmd="Agile"
 for var in "$@"
 do
 if [[ $var == "weasis-dicomizer://"* ]]; then
