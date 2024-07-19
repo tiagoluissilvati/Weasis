@@ -12,7 +12,7 @@ PACKAGE=YES
 # jdk.localedata => other locale (en_us) data are included in the jdk.localedata
 # jdk.jdwp.agent => package for debugging agent
 JDK_MODULES="java.base,java.compiler,java.datatransfer,java.net.http,java.desktop,java.logging,java.management,java.prefs,java.xml,jdk.localedata,jdk.charsets,jdk.crypto.ec,jdk.crypto.cryptoki,jdk.unsupported,jdk.jdwp.agent,java.sql"
-NAME="Weasis"
+NAME="Agile"
 IDENTIFIER="org.weasis.launcher"
 
 # Aux functions:
@@ -170,7 +170,7 @@ if (( INSTALLED_MAJOR_VERSION < REQUIRED_MAJOR_VERSION )) ; then
 fi
 
 if [ -z "$OUTPUT_PATH" ] ; then
-  OUTPUT_PATH="weasis-$ARC_OS-jdk$INSTALLED_MAJOR_VERSION-$WEASIS_VERSION"
+  OUTPUT_PATH="agile-$ARC_OS-jdk$INSTALLED_MAJOR_VERSION-$WEASIS_VERSION"
   OUTPUT_PATH_UNIX="$OUTPUT_PATH"
 fi
 
@@ -223,7 +223,7 @@ if [ "$machine" = "macosx" ] ; then
   fi
 elif [ "$machine" = "windows" ] ; then
   DICOMIZER_CONFIG="Dicomizer=$RES\dicomizer-launcher.properties"
-  declare -a customOptions=("--java-options" "-splash:\$APPDIR\resources\images\about-round.png" )
+  #declare -a customOptions=("--java-options" "-splash:\$APPDIR\resources\images\about-round.png" )
   declare -a signArgs=()
 else
   DICOMIZER_CONFIG="Dicomizer=$RES/dicomizer-launcher.properties"
@@ -252,7 +252,7 @@ if [ "$PACKAGE" = "YES" ] ; then
   if [ "$machine" = "windows" ] ; then
     [ "$arc" = "x86" ]  && UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383b" || UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383a"
     $JPKGCMD --type "msi" --app-image "$IMAGE_PATH" --dest "$OUTPUT_PATH" --name "$NAME" --resource-dir "$RES/msi/${arc}" \
-    --license-file "$INPUT_PATH\Licence.txt" --description "Weasis DICOM viewer" --win-upgrade-uuid "$UPGRADE_UID"  \
+    --license-file "$INPUT_PATH\Licence.txt" --description "Agile DICOM viewer" --win-upgrade-uuid "$UPGRADE_UID"  \
     --win-menu --win-menu-group "$NAME" --copyright "$COPYRIGHT" --app-version "$WEASIS_CLEAN_VERSION" \
     --vendor "$VENDOR" --file-associations "${curPath}\file-associations.properties" "${tmpArgs[@]}" --verbose
     mv "$OUTPUT_PATH_UNIX/$NAME-$WEASIS_CLEAN_VERSION.msi" "$OUTPUT_PATH_UNIX/$NAME-$WEASIS_CLEAN_VERSION-${arc}.msi"
@@ -261,9 +261,9 @@ if [ "$PACKAGE" = "YES" ] ; then
     for installerType in "${installerTypes[@]}"; do
       [ "${installerType}" = "rpm" ] && DEPENDENCIES="" || DEPENDENCIES="libstdc++6, libgcc1"
       $JPKGCMD --type "$installerType" --app-image "$IMAGE_PATH" --dest "$OUTPUT_PATH"  --name "$NAME" --resource-dir "$RES" \
-      --license-file "$INPUT_PATH/Licence.txt" --description "Weasis DICOM viewer" --vendor "$VENDOR" \
+      --license-file "$INPUT_PATH/Licence.txt" --description "Agile DICOM viewer" --vendor "$VENDOR" \
       --copyright "$COPYRIGHT" --app-version "$WEASIS_CLEAN_VERSION" --file-associations "${curPath}/file-associations.properties" \
-      --linux-app-release "$REVISON_INC" --linux-package-name "weasis" --linux-deb-maintainer "Nicolas Roduit" --linux-rpm-license-type "EPL-2.0" \
+      --linux-app-release "$REVISON_INC" --linux-package-name "weasis" --linux-deb-maintainer "Agile Team" --linux-rpm-license-type "EPL-2.0" \
       --linux-menu-group "Viewer;MedicalSoftware;Graphics;" --linux-app-category "science" --linux-package-deps "${DEPENDENCIES}" \
       --linux-shortcut "${tmpArgs[@]}" --verbose
       if [ -d "${TEMP_PATH}" ] ; then
