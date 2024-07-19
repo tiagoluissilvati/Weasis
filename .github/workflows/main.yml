@@ -135,7 +135,7 @@ jobs:
             declare -a customOptions=("--java-options" "-splash:\$APPDIR/resources/images/about-round.png" "--java-options" "-Dapple.laf.useScreenMenuBar=true" "--java-options" "-Dapple.awt.application.appearance=NSAppearanceNameDarkAqua")
             declare -a signArgs=("--mac-package-identifier" "${{ env.IDENTIFIER }}" "--mac-signing-keychain" "$HOME/Library/Keychains/signing_temp.keychain-db" "--mac-sign")
           elif [ "$machine" = "windows" ] ; then
-            declare -a customOptions=("--java-options" "-splash:\$APPDIR\resources\images\about-round.png" )
+          #  declare -a customOptions=("--java-options" "-splash:\$APPDIR\resources\images\about-round.png" )
             declare -a signArgs=()
           else
             declare -a customOptions=("--java-options" "-splash:\$APPDIR/resources/images/about-round.png" )
@@ -170,7 +170,7 @@ jobs:
         env:
           RES: "native-dist/weasis-native/build/script/resources/${{ matrix.wsystem }}"
           FILE_ASSOC: "native-dist/weasis-native/build/script/file-associations.properties"
-          VENDOR: "Weasis Team"
+          VENDOR: "Agile Team"
           COPYRIGHT: "© 2023-2024 Agile Team"
         run: |
           mkdir -p final-dist
@@ -179,7 +179,7 @@ jobs:
           if [ "$machine" = "windows" ] ; then
             [ "$ARC_NAME" = "x86" ] && UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383b" || UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383a"
             jpackage --type "msi" --app-image "${{ env.WEASIS_OUTPUT }}/${{ env.NAME }}" --dest "${{ env.WEASIS_OUTPUT }}" --name "${{ env.NAME }}" --resource-dir "${{ env.RES }}/msi/${ARC_NAME}" \
-            --license-file "${{ env.WEASIS_INPUT }}/Licence.txt" --description "Weasis DICOM viewer" --win-upgrade-uuid "$UPGRADE_UID" \
+            --license-file "${{ env.WEASIS_INPUT }}/Licence.txt" --description "Agile DICOM viewer" --win-upgrade-uuid "$UPGRADE_UID" \
             --win-menu --win-menu-group "${{ env.NAME }}" --copyright "${{ env.COPYRIGHT }}" --app-version "${{ env.WEASIS_CLEAN_VERSION }}" \
             --vendor "${{ env.VENDOR }}" --file-associations "${{ env.FILE_ASSOC }}" --verbose
             cp ${{ env.WEASIS_OUTPUT }}/*.msi final-dist/${{ env.NAME }}-${{ env.WEASIS_CLEAN_VERSION }}-${ARC_NAME}.msi
@@ -194,7 +194,7 @@ jobs:
               jpackage --type "${installerType}" --app-image "${{ env.WEASIS_OUTPUT }}/${{ env.NAME }}" --dest "${{ env.WEASIS_OUTPUT }}" --name "${{ env.NAME }}" --resource-dir "${{ env.RES }}" \
               --license-file "${{ env.WEASIS_INPUT }}/Licence.txt" --description "Weasis DICOM viewer" --vendor "${{ env.VENDOR }}" \
               --copyright "${{ env.COPYRIGHT }}" --app-version "${{ env.WEASIS_CLEAN_VERSION }}" --file-associations "${{ env.FILE_ASSOC }}" \
-              --linux-app-release "1" --linux-package-name "weasis" --linux-deb-maintainer "Nicolas Roduit" --linux-rpm-license-type "EPL-2.0" \
+              --linux-app-release "1" --linux-package-name "weasis" --linux-deb-maintainer "Agile Team" --linux-rpm-license-type "EPL-2.0" \
               --linux-menu-group "Viewer;MedicalSoftware;Graphics;" --linux-app-category "science" --linux-package-deps "${DEPENDENCIES}" --linux-shortcut --verbose
               cp ${{ env.WEASIS_OUTPUT }}/*.${installerType} final-dist
             done
