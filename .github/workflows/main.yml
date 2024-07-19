@@ -53,7 +53,6 @@ jobs:
     env:
       JDK_MODULES: "java.base,java.compiler,java.datatransfer,java.net.http,java.desktop,java.logging,java.management,java.prefs,java.xml,jdk.localedata,jdk.charsets,jdk.crypto.ec,jdk.crypto.cryptoki,jdk.unsupported,jdk.jdwp.agent"
       NAME: "Agile"
-      NAME_IMG: "Weasis"
       IDENTIFIER: "org.weasis.launcher"
       WEASIS_INPUT: "native-dist/weasis-native/bin-dist"
       WEASIS_OUTPUT: "output-dist"
@@ -179,7 +178,7 @@ jobs:
           ARC_NAME=${{ matrix.warc }}
           if [ "$machine" = "windows" ] ; then
             [ "$ARC_NAME" = "x86" ] && UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383b" || UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383a"
-            jpackage --type "msi" --app-image "${{ env.WEASIS_OUTPUT }}/${{ env.NAME_IMG }}" --dest "${{ env.WEASIS_OUTPUT }}" --name "${{ env.NAME }}" --resource-dir "${{ env.RES }}/msi/${ARC_NAME}" \
+            jpackage --type "msi" --app-image "${{ env.WEASIS_OUTPUT }}/${{ env.NAME }}" --dest "${{ env.WEASIS_OUTPUT }}" --name "${{ env.NAME }}" --resource-dir "${{ env.RES }}/msi/${ARC_NAME}" \
             --license-file "${{ env.WEASIS_INPUT }}/Licence.txt" --description "Agile DICOM viewer" --win-upgrade-uuid "$UPGRADE_UID" \
             --win-menu --win-menu-group "${{ env.NAME }}" --copyright "${{ env.COPYRIGHT }}" --app-version "${{ env.WEASIS_CLEAN_VERSION }}" \
             --vendor "${{ env.VENDOR }}" --file-associations "${{ env.FILE_ASSOC }}" --verbose
@@ -192,7 +191,7 @@ jobs:
             fi
             for installerType in ${installerTypes[@]}; do
               [ "${installerType}" = "rpm" ] && DEPENDENCIES="" || DEPENDENCIES="libstdc++6, libgcc1"
-              jpackage --type "${installerType}" --app-image "${{ env.WEASIS_OUTPUT }}/${{ env.NAME_IMG }}" --dest "${{ env.WEASIS_OUTPUT }}" --name "${{ env.NAME }}" --resource-dir "${{ env.RES }}" \
+              jpackage --type "${installerType}" --app-image "${{ env.WEASIS_OUTPUT }}/${{ env.NAME }}" --dest "${{ env.WEASIS_OUTPUT }}" --name "${{ env.NAME }}" --resource-dir "${{ env.RES }}" \
               --license-file "${{ env.WEASIS_INPUT }}/Licence.txt" --description "Agile DICOM viewer" --vendor "${{ env.VENDOR }}" \
               --copyright "${{ env.COPYRIGHT }}" --app-version "${{ env.WEASIS_CLEAN_VERSION }}" --file-associations "${{ env.FILE_ASSOC }}" \
               --linux-app-release "1" --linux-package-name "weasis" --linux-deb-maintainer "Agile Team" --linux-rpm-license-type "EPL-2.0" \
