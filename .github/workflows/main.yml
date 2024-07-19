@@ -52,7 +52,7 @@ jobs:
   jpackage:
     env:
       JDK_MODULES: "java.base,java.compiler,java.datatransfer,java.net.http,java.desktop,java.logging,java.management,java.prefs,java.xml,jdk.localedata,jdk.charsets,jdk.crypto.ec,jdk.crypto.cryptoki,jdk.unsupported,jdk.jdwp.agent"
-      NAME: "Weasis"
+      NAME: "Agile"
       IDENTIFIER: "org.weasis.launcher"
       WEASIS_INPUT: "native-dist/weasis-native/bin-dist"
       WEASIS_OUTPUT: "output-dist"
@@ -135,7 +135,7 @@ jobs:
             declare -a customOptions=("--java-options" "-splash:\$APPDIR/resources/images/about-round.png" "--java-options" "-Dapple.laf.useScreenMenuBar=true" "--java-options" "-Dapple.awt.application.appearance=NSAppearanceNameDarkAqua")
             declare -a signArgs=("--mac-package-identifier" "${{ env.IDENTIFIER }}" "--mac-signing-keychain" "$HOME/Library/Keychains/signing_temp.keychain-db" "--mac-sign")
           elif [ "$machine" = "windows" ] ; then
-            # declare -a customOptions=("--java-options" "-splash:\$APPDIR\resources\images\about-round.png" )
+          #  declare -a customOptions=("--java-options" "-splash:\$APPDIR\resources\images\about-round.png" )
             declare -a signArgs=()
           else
             declare -a customOptions=("--java-options" "-splash:\$APPDIR/resources/images/about-round.png" )
@@ -192,9 +192,9 @@ jobs:
             for installerType in ${installerTypes[@]}; do
               [ "${installerType}" = "rpm" ] && DEPENDENCIES="" || DEPENDENCIES="libstdc++6, libgcc1"
               jpackage --type "${installerType}" --app-image "${{ env.WEASIS_OUTPUT }}/${{ env.NAME }}" --dest "${{ env.WEASIS_OUTPUT }}" --name "${{ env.NAME }}" --resource-dir "${{ env.RES }}" \
-              --license-file "${{ env.WEASIS_INPUT }}/Licence.txt" --description "Weasis DICOM viewer" --vendor "${{ env.VENDOR }}" \
+              --license-file "${{ env.WEASIS_INPUT }}/Licence.txt" --description "Agile DICOM viewer" --vendor "${{ env.VENDOR }}" \
               --copyright "${{ env.COPYRIGHT }}" --app-version "${{ env.WEASIS_CLEAN_VERSION }}" --file-associations "${{ env.FILE_ASSOC }}" \
-              --linux-app-release "1" --linux-package-name "weasis" --linux-deb-maintainer "Nicolas Roduit" --linux-rpm-license-type "EPL-2.0" \
+              --linux-app-release "1" --linux-package-name "weasis" --linux-deb-maintainer "Agile Team" --linux-rpm-license-type "EPL-2.0" \
               --linux-menu-group "Viewer;MedicalSoftware;Graphics;" --linux-app-category "science" --linux-package-deps "${DEPENDENCIES}" --linux-shortcut --verbose
               cp ${{ env.WEASIS_OUTPUT }}/*.${installerType} final-dist
             done
