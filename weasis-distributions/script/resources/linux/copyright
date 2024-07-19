@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: weasis
-Upstream-Contact: Nicolas Roduit
+Upstream-Name: agile
+Upstream-Contact: Agile Team
 Source: https://github.com/nroduit/Weasis
 
 Files: *
