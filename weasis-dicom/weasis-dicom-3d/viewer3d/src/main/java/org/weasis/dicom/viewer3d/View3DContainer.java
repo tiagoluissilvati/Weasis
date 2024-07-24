@@ -179,11 +179,12 @@ public class View3DContainer extends DicomViewerPlugin implements PropertyChange
         null);
   }
 
-    public static final List<GridBagLayoutModel> LAYOUT_LIST =
-        Stream.concat(MprContainer.LAYOUT_LIST.stream(), Stream.of(VIEWS_2x2_mpr,
-   VIEWS_vr, VIEWS_vr_1x2)).toList();
-//  public static final List<GridBagLayoutModel> LAYOUT_LIST =
-//      Stream.of(VIEWS_vr, VIEWS_vr_1x2).toList();
+  public static final List<GridBagLayoutModel> LAYOUT_LIST =
+      Stream.concat(
+              MprContainer.LAYOUT_LIST.stream(), Stream.of(VIEWS_2x2_mpr, VIEWS_vr, VIEWS_vr_1x2))
+          .toList();
+  //  public static final List<GridBagLayoutModel> LAYOUT_LIST =
+  //      Stream.of(VIEWS_vr, VIEWS_vr_1x2).toList();
 
   public static final SeriesViewerUI UI = new SeriesViewerUI(View3DContainer.class);
 

@@ -12,7 +12,7 @@ PACKAGE=YES
 # jdk.localedata => other locale (en_us) data are included in the jdk.localedata
 # jdk.jdwp.agent => package for debugging agent
 JDK_MODULES="java.base,java.compiler,java.datatransfer,java.net.http,java.desktop,java.logging,java.management,java.prefs,java.xml,jdk.localedata,jdk.charsets,jdk.crypto.ec,jdk.crypto.cryptoki,jdk.unsupported,jdk.jdwp.agent,java.sql"
-NAME="Weasis"
+NAME="Agile"
 IDENTIFIER="org.weasis.launcher"
 
 # Aux functions:
@@ -232,7 +232,7 @@ else
 fi
 declare -a commonOptions=("--java-options" "-Dgosh.port=17179" \
 "--java-options" "-Djavax.accessibility.assistive_technologies=org.weasis.launcher.EmptyAccessibilityProvider" \
-"--java-options" "-Djavax.accessibility.screen_magnifier_present=false" "--java-options" "--enable-preview" \
+"--java-options" "-Djavax.accessibility.screen_magnifier_present=false" \
 "--java-options" "--add-exports=java.base/sun.net.www.protocol.http=ALL-UNNAMED" "--java-options" "--add-exports=java.base/sun.net.www.protocol.file=ALL-UNNAMED" \
 "--java-options" "--add-exports=java.base/sun.net.www.protocol.https=ALL-UNNAMED" "--java-options" "--add-exports=java.base/sun.net.www.protocol.ftp=ALL-UNNAMED" \
 "--java-options" "--add-exports=java.base/sun.net.www.protocol.jar=ALL-UNNAMED" "--java-options" "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED" \
@@ -247,12 +247,12 @@ $JPKGCMD --type app-image --input "$INPUT_DIR" --dest "$OUTPUT_PATH" --name "$NA
 "${tmpArgs[@]}" --verbose "${signArgs[@]}" "${customOptions[@]}" "${commonOptions[@]}"
 
 if [ "$PACKAGE" = "YES" ] ; then
-  VENDOR="Weasis Team"
-  COPYRIGHT="© 2009-2023 Weasis Team"
+  VENDOR="Agile Team"
+  COPYRIGHT="© 2023-2024 Agile Team"
   if [ "$machine" = "windows" ] ; then
     [ "$arc" = "x86" ]  && UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383b" || UPGRADE_UID="3aedc24e-48a8-4623-ab39-0c3c01c7383a"
     $JPKGCMD --type "msi" --app-image "$IMAGE_PATH" --dest "$OUTPUT_PATH" --name "$NAME" --resource-dir "$RES/msi/${arc}" \
-    --license-file "$INPUT_PATH\Licence.txt" --description "Weasis DICOM viewer" --win-upgrade-uuid "$UPGRADE_UID"  \
+    --license-file "$INPUT_PATH\Licence.txt" --description "Agile DICOM viewer" --win-upgrade-uuid "$UPGRADE_UID"  \
     --win-menu --win-menu-group "$NAME" --copyright "$COPYRIGHT" --app-version "$WEASIS_CLEAN_VERSION" \
     --vendor "$VENDOR" --file-associations "${curPath}\file-associations.properties" "${tmpArgs[@]}" --verbose
     mv "$OUTPUT_PATH_UNIX/$NAME-$WEASIS_CLEAN_VERSION.msi" "$OUTPUT_PATH_UNIX/$NAME-$WEASIS_CLEAN_VERSION-${arc}.msi"

@@ -475,7 +475,7 @@ public class EventManager extends ImageViewerEventManager<DicomImageElement> {
     return new ComboItemListener<>(
         ActionVol.RENDERING_TYPE,
         Arrays.stream(RenderingType.values())
-          //  .limit(RenderingType.values().length - 1L)
+            //  .limit(RenderingType.values().length - 1L)
             .toArray(RenderingType[]::new)) {
 
       @Override

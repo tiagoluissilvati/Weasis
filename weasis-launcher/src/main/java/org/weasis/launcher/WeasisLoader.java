@@ -165,7 +165,7 @@ public class WeasisLoader {
             if (container == null) {
               initGUI();
             }
-           // displayOnScreen();
+            // displayOnScreen();
           });
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();

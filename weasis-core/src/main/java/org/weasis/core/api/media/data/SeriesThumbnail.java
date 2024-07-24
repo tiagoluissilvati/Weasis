@@ -335,10 +335,7 @@ public class SeriesThumbnail extends Thumbnail
         g2d.drawArc(x + inset, y + inset, size, size, 0, 360);
       }
 
-      g2d.setFont(
-          width > DEFAULT_SIZE
-              ? FontItem.H3.getFont()
-              : FontItem.LARGE.getFont());
+      g2d.setFont(width > DEFAULT_SIZE ? FontItem.H3.getFont() : FontItem.LARGE.getFont());
       FontMetrics fontMetrics = g2d.getFontMetrics();
       final int fontHeight = fontMetrics.getHeight();
       int descent = g2d.getFontMetrics().getDescent();

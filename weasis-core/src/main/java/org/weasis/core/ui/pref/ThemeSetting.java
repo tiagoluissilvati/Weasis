@@ -251,7 +251,8 @@ public class ThemeSetting extends AbstractItemDialogPage {
   @Override
   public void resetToDefaultValues() {
     WProperties preferences = GuiUtils.getUICore().getSystemPreferences();
-    preferences.setProperty("weasis.theme", "com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme");
+    preferences.setProperty(
+        "weasis.theme", "com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme");
     preferences.setProperty(FlatSystemProperties.UI_SCALE, "-1");
     if (SystemInfo.isLinux) {
       preferences.setProperty(UICore.LINUX_WINDOWS_DECORATION, Boolean.FALSE.toString());
